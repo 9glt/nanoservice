@@ -1,7 +1,6 @@
 package records
 
 import (
-	"flag"
 	"io"
 	"strings"
 
@@ -35,8 +34,7 @@ func Create(flags *Flags) (record Record, err error) {
 	record.UUID = uuid.NewString()
 	record.Category = flags.Category
 	record.Body = strings.Join(flags.Args, " ")
-
-	if flag.Arg(0) == "-" && flags.Rdr != nil {
+	if flags.Arg(0) == "-" && flags.Rdr != nil {
 		var b []byte
 		b, err = io.ReadAll(flags.Rdr)
 		if err != nil {
@@ -76,7 +74,7 @@ func Update(flags *Flags) (record Record, err error) {
 	}
 
 	record.Body = strings.Join(flags.Args[2:], " ")
-	if flag.Arg(1) == "-" && flags.Rdr != nil {
+	if flags.Arg(1) == "-" && flags.Rdr != nil {
 		var b []byte
 		b, err = io.ReadAll(flags.Rdr)
 		if err != nil {
@@ -92,7 +90,7 @@ func Update(flags *Flags) (record Record, err error) {
 }
 
 func Delete(flags *Flags) (record Record, err error) {
-	err = db.Where("category = ? and uuid = ? and domain = ?", flags.Category, flag.Args()[0], flags.Domain).First(&record).Error
+	err = db.Where("category = ? and uuid = ? and domain = ?", flags.Category, flags.Arg(0), flags.Domain).First(&record).Error
 	if CheckError(err) != nil {
 		return
 	}

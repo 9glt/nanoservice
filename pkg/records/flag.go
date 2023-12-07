@@ -9,7 +9,7 @@ type Flags struct {
 
 	Args []string
 
-	Rdr io.Reader
+	Rdr io.Reader `json:"-"`
 }
 
 func (f Flags) Arg(i int) string {

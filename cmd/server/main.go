@@ -20,8 +20,8 @@ func main() {
 			Action:   c.Request.Method,
 			Category: c.Query("category"),
 			Domain:   c.Query("domain"),
-			Args:     []string{"-", "-"},
-			Rdr:      c.Request.Body,
+			Args:     []string{"-"},
+			Rdr:      c.Copy().Request.Body,
 		}
 		if flagz.Category == "" || flagz.Domain == "" {
 			c.JSON(200, gin.H{
